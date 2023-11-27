@@ -1,0 +1,26 @@
+# MakeFile by Klaudiusz
+
+# Here add an source files
+SRC = src/time/time.cpp src/module/Module.cpp src/module/Window.cpp src/Game.cpp src/main.cpp
+
+CC = g++
+
+LIBPATH = -Llib/SDL2
+LINKERFLAGS = -lmingw32 -lSDL2main -lSDL2 -lSDL2_image
+
+INCLUDEPATH = -Iinclude
+
+EXE = bin/tetris
+
+COMPILE = ${INCLUDEPATH} ${LIBPATH} -o ${EXE} ${SRC} ${LINKERFLAGS}
+
+release:
+	${CC} ${COMPILE}
+
+debug:
+	${CC} -g ${COMPILE}
+
+test:
+	g++ --version
+	gcc --version
+	gdb --version
