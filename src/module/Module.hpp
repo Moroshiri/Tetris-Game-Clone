@@ -12,11 +12,10 @@ public:
     Module();
     ~Module();
 
-    std::string GetError();
+    
     printHandle Print;
 
-protected:
-    char* _errorMsg;
+
 };
 
 #endif

@@ -2,7 +2,7 @@
 
 Sprite::Sprite()
 {
-    _texture = Texture();
+    _texture = Texture(_rend);
 }
 
 Sprite::Sprite(Texture tex)
@@ -25,7 +25,7 @@ Texture Sprite::GetTexture()
     return _texture;
 }
 
-void Sprite::Render(SDL_Renderer* rend)
+void Sprite::Render()
 {
-    SDL_RenderCopyEx(rend, _texture.GetTexture(), NULL, &_rect, _rot, &_texture.GetCenter(), _texture.GetFlip());
+    SDL_RenderCopyEx(_rend, _texture.GetTexture(), NULL, &_rect, _rot, &_texture.GetCenter(), _texture.GetFlip());
 }

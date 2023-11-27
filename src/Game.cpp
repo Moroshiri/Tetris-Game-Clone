@@ -2,7 +2,7 @@
 
 #include "util/Convert.hpp"
 
-Game::Game(Window* window) : _keyState((SDL_GetKeyboardState(NULL)))
+Game::Game(Window* window) : _keyState(SDL_GetKeyboardState(NULL))
 {
     _win = window;
 }

@@ -2,16 +2,18 @@
 #define _TEXTURE_HPP_
 
 #include <SDL2/SDL_image.h>
-#include "../util/Types.hpp"
+#include "../../util/Types.hpp"
+#include "../../util/Error.hpp"
 
-class Texture
+class Texture : public Error
 {
 public:
 
-    Texture();
+    Texture(SDL_Renderer* rend);
+    Texture(SDL_Renderer* rend, const char* imgFilePath);
     ~Texture();
 
-    bool LoadFromFile(const char* path);
+    bool LoadImage(const char* path);
 
     SDL_Texture* GetTexture();
     Point GetCenter();
@@ -22,7 +24,7 @@ private:
     SDL_Surface* _surf;
     Point _center;
     SDL_RendererFlip _flip;
-
+    SDL_Renderer* _rend;
 };
 
 #endif

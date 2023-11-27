@@ -7,8 +7,3 @@ Module::Module()
 
 Module::~Module()
 { }
-
-std::string Module::GetError()
-{
-    return std::string(_errorMsg);
-}
