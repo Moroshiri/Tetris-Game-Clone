@@ -1,7 +1,7 @@
 # MakeFile by Klaudiusz
 
 # Here add an source files
-SRC = src/time/time.cpp src/module/Module.cpp src/module/Window.cpp src/Game.cpp src/main.cpp
+SRC = src/util/Error.cpp src/graphics/texture/Texture.cpp src/graphics/entity/Entity.cpp src/graphics/entity/Sprite.cpp src/graphics/entity/transform/Transform.cpp src/time/Time.cpp src/module/Window.cpp src/Game.cpp src/main.cpp
 
 CC = g++
 
@@ -14,10 +14,14 @@ EXE = bin/tetris
 
 COMPILE = ${INCLUDEPATH} ${LIBPATH} -o ${EXE} ${SRC} ${LINKERFLAGS}
 
+#COPYASSETS = xcopy /E assets\ bin\resources\ 
+
 release:
+	$(COPYASSETS)
 	${CC} ${COMPILE}
 
 debug:
+	$(COPYASSETS)
 	${CC} -g ${COMPILE}
 
 test:

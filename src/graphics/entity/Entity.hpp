@@ -1,7 +1,7 @@
 #ifndef _ENTITY_HPP_
 #define _ENTITY_HPP_
 
-#include <SDL.h>
+#include <SDL2/SDL.h>
 
 class Entity
 {

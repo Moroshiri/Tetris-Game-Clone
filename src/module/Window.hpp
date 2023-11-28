@@ -5,13 +5,15 @@
 #include <SDL2/SDL_image.h>
 #include <string>
 
-#include "Module.hpp"
 #include "../graphics/entity/Sprite.hpp"
+#include "../util/Error.hpp"
 
 const int DEFAULT_SCREEN_WIDTH = 800;
 const int DEFAULT_SCREEN_HEIGHT = 600;
 
-class Window : public Module
+typedef void (*printHandle)(std::string);
+
+class Window : public Error
 {
 public:
 
@@ -26,15 +28,23 @@ public:
     void Render();
     void AddToRenderList(Entity* element);
 
+    SDL_Renderer* GetRenderer();
+
+    printHandle Print;
+
+    Point GetCenter();
+
+
 private:
     int _screen_width, _screen_height;
     std::string _window_title;
 
+    Entity **_renderList;
+    uint32_t _renderListPointer;
+
     SDL_Window *_window;
 
     SDL_Renderer *_renderer;
-
-    
 };
 
 #endif

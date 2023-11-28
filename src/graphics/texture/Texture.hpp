@@ -15,14 +15,14 @@ public:
 
     bool LoadImage(const char* path);
 
-    SDL_Texture* GetTexture();
-    Point GetCenter();
+    SDL_Texture* GetSDLTexture();
+
     SDL_RendererFlip GetFlip();
+    void SetFlip(SDL_RendererFlip flip);
 
 private:
     SDL_Texture* _tex;
     SDL_Surface* _surf;
-    Point _center;
     SDL_RendererFlip _flip;
     SDL_Renderer* _rend;
 };

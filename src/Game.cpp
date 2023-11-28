@@ -16,13 +16,31 @@ void Game::End()
 void Game::Run()
 {
     _running = true;
-
-    while(_running)
+    try
     {
-        _time.CalculateTime();
-        HandleEvents();
+        Texture brickTex = Texture(_win->GetRenderer(), "brick.png");
+        if (!brickTex.IsOK())
+            _win->Print(brickTex.GetErrorMsg());
+        else
+        {
+            Sprite brick = Sprite(brickTex);
+            brick.SetSize(50, 50);
+            brick.SetCenter(25, 25);
+            brick.SetPosition(_win->GetCenter());
+            _win->AddToRenderList(&brick);
 
-        _win->Render();
+            while(_running)
+            {
+                _time.CalculateTime();
+                HandleEvents();
+
+                _win->Render();
+            }
+        }
+    }
+    catch(const std::exception& e)
+    {
+        _win->Print(std::string(e.what()));
     }
 }
 

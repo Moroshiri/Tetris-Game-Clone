@@ -6,6 +6,8 @@ Window::Window()
     _screen_height = DEFAULT_SCREEN_HEIGHT;
 
     _window_title = "SDL";
+
+    _renderListPointer = 0;
 }
 
 Window::Window(int width, int height, std::string title)
@@ -14,12 +16,16 @@ Window::Window(int width, int height, std::string title)
     _screen_height = height;
 
     _window_title = title;
+
+    _renderListPointer = 0;
 }
 
 Window::~Window()
 {
     SDL_DestroyRenderer(_renderer);
     SDL_DestroyWindow(_window);
+
+    delete _renderList;
 }
 
 bool Window::Init()
@@ -48,15 +54,43 @@ bool Window::Init()
     return true;
 }
 
-
+void Window::AddToRenderList(Entity* element)
+{
+    Entity **tmp = new Entity*[_renderListPointer++];
+    
+    for (uint32_t i = 0; i < _renderListPointer; i++)
+        tmp[i] = _renderList[i];
+    
+    tmp[_renderListPointer] = element;
+    delete _renderList;
+    _renderList = tmp;
+}
 
 void Window::Render()
 {
     //SDL_RenderClear(_renderer);
     //SDL_RenderPresent(_renderer);
 
-    
+    if(_renderListPointer != 0)
+    for(uint32_t i = 0; i <= _renderListPointer; i++)
+    {
+        _renderList[i]->Render();
+    }
 
     SDL_UpdateWindowSurface(_window);
 }
 
+SDL_Renderer* Window::GetRenderer()
+{
+    return _renderer;
+}
+
+Point Window::GetCenter()
+{
+    int w, h;
+    SDL_GetWindowSizeInPixels(_window, &w, &h);
+    Point res;
+    res.x = w/2;
+    res.y = h/2;
+    return res;
+}

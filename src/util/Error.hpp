@@ -17,15 +17,28 @@ class Error
 public:
 
     Error();
-    Error(ErrorCode code);
     ~Error();
 
     std::string GetErrorMsg();
     ErrorCode GetErrorCode();
 
+    bool IsOK();
+
 protected:
     char* _errorMsg;
     ErrorCode _errorCode;
+    bool _OKFlag;
+};
+
+class ResourceLoadException : public std::exception
+{
+public:
+    ResourceLoadException();
+    ResourceLoadException(const char* message);
+
+    const char *what();
+private:
+    const char* _mes;
 };
 
 #endif

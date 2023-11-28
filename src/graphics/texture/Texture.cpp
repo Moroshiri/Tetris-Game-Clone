@@ -12,24 +12,25 @@ Texture::Texture(SDL_Renderer *rend)
 Texture::Texture(SDL_Renderer* rend, const char* imgFilePath) : Texture(rend)
 {
     if (!LoadImage(imgFilePath))
-        throw new std::exception();
+    {
+        _OKFlag = false;
+    }
+        
 }
 
 Texture::~Texture()
 {
-    delete _tex;
-    delete &_center;
-    delete &_flip;
+    SDL_DestroyTexture(_tex);
     // _surf jest usuwane od razu po utworzeniu _tex
     // _rend jest otrzymywane z zewnątrz więc usunięcie go w tym miejscu może powodować błędy
 }
 
 bool Texture::LoadImage(const char* path)
 {
-    _surf = IMG_Load("../assets/img/smile.png");
+    _surf = IMG_Load(path);
     if(_surf == NULL)
     {
-        sprintf(_errorMsg, "Load image error: %s", SDL_GetError());
+        sprintf(_errorMsg, "Image load error: %s", SDL_GetError());
         _errorCode = ERROR_TEXTURE_LOAD;
         return false;
     }
@@ -44,4 +45,19 @@ bool Texture::LoadImage(const char* path)
     }
 
     return true;
+}
+
+SDL_Texture* Texture::GetSDLTexture()
+{
+    return _tex;
+}
+
+SDL_RendererFlip Texture::GetFlip()
+{
+    return _flip;
+}
+
+void Texture::SetFlip(SDL_RendererFlip flip)
+{
+    _flip = flip;
 }

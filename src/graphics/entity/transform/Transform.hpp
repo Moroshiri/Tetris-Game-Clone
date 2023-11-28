@@ -3,7 +3,7 @@
 
 #include <SDL2/SDL_image.h>
 
-#include "../../util/Types.hpp"
+#include "../../../util/Types.hpp"
 
 enum Direction
 {
@@ -22,11 +22,11 @@ public:
     ~Transform();
 
     Rect GetRect();
-    void SetRect(Rect rect);
+    //void SetRect(Rect rect);
 
     virtual void Rotate(double angle);
     virtual void SetRotation(double angle);
-    double GetRotation();
+    virtual double GetRotation();
 
     virtual void Move(int dx, int dy);
     virtual void Move(Direction dir, int steps);
@@ -37,6 +37,10 @@ public:
     virtual void SetSize(int w, int h);
     virtual void SetSize(Size size);
 
+    virtual Point GetCenter();
+    virtual void SetCenter(Point point);
+    virtual void SetCenter(int x, int y);
+
     /*
         Metody GetSize() i GetPosition() nie są potrzebne,
         ponieważ wszystkie te iformacje są zawarte w strukturze Rect
@@ -45,6 +49,7 @@ public:
 protected:
     Rect _rect;
     double _rot;
+    Point _center;
 };
 
 #endif

@@ -2,14 +2,9 @@
 
 Error::Error()
 { 
-    _errorMsg = "";
+    _errorMsg = new char[0];
     _errorCode = ERROR_BLANK;
-}
-
-Error::Error(ErrorCode code)
-{
-    _errorMsg = "";
-    _errorCode = code;
+    _OKFlag = true;
 }
 
 Error::~Error()
@@ -25,4 +20,25 @@ std::string Error::GetErrorMsg()
 ErrorCode Error::GetErrorCode()
 {
     return _errorCode;
+}
+
+bool Error::IsOK()
+{
+    return _OKFlag;
+}
+
+
+ResourceLoadException::ResourceLoadException() : _mes("Resource load error!")
+{
+    ;
+}
+
+ResourceLoadException::ResourceLoadException(const char* mes) : _mes(mes)
+{
+    ;
+}
+
+const char* ResourceLoadException::what()
+{
+    return _mes;
 }
