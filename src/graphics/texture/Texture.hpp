@@ -16,6 +16,7 @@ public:
     bool LoadImage(const char* path);
 
     SDL_Texture* GetSDLTexture();
+    SDL_Renderer* GetRenderer();
 
     SDL_RendererFlip GetFlip();
     void SetFlip(SDL_RendererFlip flip);

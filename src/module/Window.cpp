@@ -8,6 +8,8 @@ Window::Window()
     _window_title = "SDL";
 
     _renderListPointer = 0;
+
+    _renderList = new Entity*();
 }
 
 Window::Window(int width, int height, std::string title)
@@ -16,8 +18,6 @@ Window::Window(int width, int height, std::string title)
     _screen_height = height;
 
     _window_title = title;
-
-    _renderListPointer = 0;
 }
 
 Window::~Window()
@@ -51,33 +51,48 @@ bool Window::Init()
     }
     SDL_SetRenderDrawColor(_renderer, 0, 0, 0, 0);
 
+    if(IMG_Init(IMG_INIT_PNG | IMG_INIT_JPG) < 0)
+    {
+        sprintf(_errorMsg, "SDL_Image library initialising error: %s", SDL_GetError());
+        return false;
+    }
+
     return true;
 }
 
 void Window::AddToRenderList(Entity* element)
 {
-    Entity **tmp = new Entity*[_renderListPointer++];
+    if (_renderListPointer == 0)
+    {
+        _renderList[0] = element;
+        _renderListPointer++;
+    }
+    else
+    {
+        Entity **tmp = _renderList;
+        _renderList = new Entity*[_renderListPointer++];
     
-    for (uint32_t i = 0; i < _renderListPointer; i++)
-        tmp[i] = _renderList[i];
-    
-    tmp[_renderListPointer] = element;
-    delete _renderList;
-    _renderList = tmp;
+        for (uint32_t i = 0; i < _renderListPointer; i++)
+            _renderList[i] = tmp[i];
+        
+        _renderList[_renderListPointer] = element;
+        delete tmp;
+    }
 }
 
 void Window::Render()
 {
-    //SDL_RenderClear(_renderer);
-    //SDL_RenderPresent(_renderer);
+    SDL_RenderClear(_renderer);
 
+    // Render entities from the list
     if(_renderListPointer != 0)
-    for(uint32_t i = 0; i <= _renderListPointer; i++)
+    for(uint32_t i = 0; i < _renderListPointer; i++)
     {
         _renderList[i]->Render();
     }
 
-    SDL_UpdateWindowSurface(_window);
+    SDL_RenderPresent(_renderer);
+    //SDL_UpdateWindowSurface(_window);
 }
 
 SDL_Renderer* Window::GetRenderer()

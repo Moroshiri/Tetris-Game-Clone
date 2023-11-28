@@ -1,14 +1,22 @@
 #include "Game.hpp"
 #include <iostream>
+#include <windows.h>
 
 void Print(std::string message);
 
 int main(int argv, char** args)
 {
     std::cout << "Hello it's Tetris game clone!" << std::endl;
+    LPSTR dir = new CHAR[128];
+    GetCurrentDirectoryA(128, dir);
+    std::cout << "Working from: " << dir << std::endl;
 
     Window winObj = Window();
-    winObj.Init();
+    if(!winObj.Init())
+    {
+        Print(winObj.GetErrorMsg());     
+        return -1;
+    }
     winObj.Print = (printHandle)Print;
 
     Game gameObj = Game(&winObj);

@@ -9,7 +9,7 @@ class Sprite : public Transform, public Entity
 {
 public:
 
-    Sprite();
+    Sprite(SDL_Renderer* rend);
     Sprite(Texture tex);
     ~Sprite();
 

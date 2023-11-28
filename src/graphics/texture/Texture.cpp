@@ -52,6 +52,11 @@ SDL_Texture* Texture::GetSDLTexture()
     return _tex;
 }
 
+SDL_Renderer* Texture::GetRenderer()
+{
+    return _rend;
+}
+
 SDL_RendererFlip Texture::GetFlip()
 {
     return _flip;

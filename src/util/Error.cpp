@@ -9,7 +9,7 @@ Error::Error()
 
 Error::~Error()
 {
-    delete _errorMsg;
+    //delete _errorMsg;
 }
 
 std::string Error::GetErrorMsg()
