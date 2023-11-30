@@ -6,7 +6,7 @@ Entity::Entity()
 Entity::~Entity()
 { }
 
-void Entity::Render()
+void Entity::Render(SDL_Renderer* rend)
 {
     
 }

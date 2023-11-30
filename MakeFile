@@ -1,7 +1,7 @@
 # MakeFile by Klaudiusz
 
-# Here add an source files
-SRC = src/util/Error.cpp src/graphics/texture/Texture.cpp src/graphics/entity/Entity.cpp src/graphics/entity/Sprite.cpp src/graphics/entity/transform/Transform.cpp src/time/Time.cpp src/module/Window.cpp src/Game.cpp src/main.cpp
+# Find .cpp files in project directory
+SRC := $(shell find src -name *.cpp)
 
 CC = g++
 
@@ -14,15 +14,24 @@ EXE = bin/tetris
 
 COMPILE = ${INCLUDEPATH} ${LIBPATH} -o ${EXE} ${SRC} ${LINKERFLAGS}
 
+MSG_BEGIN = Compiling project!
+MSG_COMPLETED = Compilation completed!
+
 #COPYASSETS = xcopy /E assets\ bin\resources\ 
 
 release:
-	$(COPYASSETS)
+	@echo ${MSG_BEGIN}
+	@echo
 	${CC} ${COMPILE}
+	@echo
+	@echo ${MSG_COMPLETED}
 
 debug:
-	$(COPYASSETS)
+	@echo ${MSG_BEGIN}
+	@echo
 	${CC} -g ${COMPILE}
+	@echo
+	@echo ${MSG_COMPLETED}
 
 test:
 	g++ --version

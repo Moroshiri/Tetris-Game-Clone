@@ -32,28 +32,32 @@ bool Window::Init()
 {
     if(SDL_Init(SDL_INIT_EVERYTHING) < 0)
     {
-        sprintf(_errorMsg, "Window initialising error: %s", SDL_GetError());
+        _errorMsg = ErrorMsg("SDL library initialising error: ") + ErrorMsg(SDL_GetError());
+        _errorCode = ERROR_WINDOW_SDLINIT;
         return false;
     }
     
     _window = SDL_CreateWindow(_window_title.c_str(), SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, _screen_width, _screen_height, SDL_WINDOW_SHOWN);
     if(_window == NULL)
     {
-        sprintf(_errorMsg, "Window creation error: %s", SDL_GetError());
+        _errorMsg = ErrorMsg("Window creation error: ") + ErrorMsg(SDL_GetError());
+        _errorCode = ERROR_WINDOW_WINCREATION;
         return false;
     }
 
     _renderer = SDL_CreateRenderer(_window, -1, SDL_RENDERER_ACCELERATED);
     if(_renderer == NULL)
     {
-        sprintf(_errorMsg, "Renderer initialising error: %s", SDL_GetError());
+        _errorMsg = ErrorMsg("Renderer creation error: ") + ErrorMsg(SDL_GetError());
+        _errorCode = ERROR_WINDOW_RENDCREATION;
         return false;
     }
     SDL_SetRenderDrawColor(_renderer, 0, 0, 0, 0);
 
     if(IMG_Init(IMG_INIT_PNG | IMG_INIT_JPG) < 0)
     {
-        sprintf(_errorMsg, "SDL_Image library initialising error: %s", SDL_GetError());
+        _errorMsg = ErrorMsg("SDL_Image library initialising error: ") + ErrorMsg(SDL_GetError());
+        _errorCode = ERROR_WINDOW_IMGINIT;
         return false;
     }
 
@@ -88,7 +92,7 @@ void Window::Render()
     if(_renderListPointer != 0)
     for(uint32_t i = 0; i < _renderListPointer; i++)
     {
-        _renderList[i]->Render();
+        _renderList[i]->Render(_renderer);
     }
 
     SDL_RenderPresent(_renderer);
@@ -109,3 +113,5 @@ Point Window::GetCenter()
     res.y = h/2;
     return res;
 }
+
+printHandle Window::Print = nullptr;

@@ -16,7 +16,7 @@ public:
     void SetTexture(Texture tex);
     Texture GetTexture();
 
-    virtual void Render();
+    virtual void Render(SDL_Renderer* rend);
 
 private:
     Texture _texture;

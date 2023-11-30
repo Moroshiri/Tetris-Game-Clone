@@ -3,6 +3,8 @@
 #include <windows.h>
 
 void Print(std::string message);
+void PrintError(Error err);
+void PrintErrorShort(Error err);
 
 int main(int argv, char** args)
 {
@@ -11,16 +13,21 @@ int main(int argv, char** args)
     GetCurrentDirectoryA(128, dir);
     std::cout << "Working from: " << dir << std::endl;
 
+    Error::PrintError = PrintErrorShort;
+    Window::Print = Print;
+
     Window winObj = Window();
     if(!winObj.Init())
     {
-        Print(winObj.GetErrorMsg());     
+        PrintErrorShort(winObj.GetError());  
         return -1;
     }
-    winObj.Print = (printHandle)Print;
 
     Game gameObj = Game(&winObj);
-    gameObj.Run();
+    Error runResult = gameObj.Run();
+
+    if(runResult != Error())
+        PrintErrorShort(runResult);
     
     SDL_Quit();
 
@@ -30,4 +37,16 @@ int main(int argv, char** args)
 void Print(std::string message)
 {
     std::cout << message << std::endl;
+}
+
+void PrintError(Error err)
+{
+    std::cout << "An error occurred while the program was running!" << std::endl;
+    std::cout << "Code: " << err.GetErrorCode() << std::endl;
+    std::cout << "Message: " << err.GetErrorMsg() << std::endl;
+}
+
+void PrintErrorShort(Error err)
+{
+    std::cout << "Error: " << err.GetErrorCode() << " : " << err.GetErrorMsg() << std::endl;
 }

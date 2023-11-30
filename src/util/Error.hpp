@@ -6,26 +6,40 @@
 enum ErrorCode
 {
     ERROR_BLANK,
-    ERROR_WINDOW_INIT,
+    ERROR_EXCEPTION,
+    ERROR_WINDOW_SDLINIT,
+    ERROR_WINDOW_IMGINIT,
+    ERROR_WINDOW_WINCREATION,
+    ERROR_WINDOW_RENDCREATION,
     ERROR_TEXTURE_LOAD,
     ERROR_TEXTURE_CREATE,
     ERROR_LAST
 };
+
+typedef std::string ErrorMsg;
 
 class Error
 {
 public:
 
     Error();
+    Error(ErrorCode code, ErrorMsg msg);
     ~Error();
 
-    std::string GetErrorMsg();
+    ErrorMsg GetErrorMsg();
     ErrorCode GetErrorCode();
+    Error GetError();
+
+    typedef void (*printErrorHandle)(Error);
+    static printErrorHandle PrintError;
 
     bool IsOK();
 
+    bool operator ==(Error a);
+    bool operator !=(Error a);
+
 protected:
-    char* _errorMsg;
+    ErrorMsg _errorMsg;
     ErrorCode _errorCode;
     bool _OKFlag;
 };

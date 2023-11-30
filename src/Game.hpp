@@ -13,7 +13,7 @@ public:
     //ool Init();
 
     // Uruchamia pętlę główną
-    void Run();
+    Error Run();
 
     // Kończy działanie pętli głównej
     void End();

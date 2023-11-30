@@ -23,7 +23,6 @@ public:
 
 private:
     SDL_Texture* _tex;
-    SDL_Surface* _surf;
     SDL_RendererFlip _flip;
     SDL_Renderer* _rend;
 };

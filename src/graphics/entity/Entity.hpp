@@ -10,10 +10,9 @@ public:
     Entity();
     ~Entity();
 
-    virtual void Render();
+    virtual void Render(SDL_Renderer* rend);
 
 protected:
-    SDL_Renderer* _rend;
 
 };
 

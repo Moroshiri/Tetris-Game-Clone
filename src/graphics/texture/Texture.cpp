@@ -1,36 +1,30 @@
 #include "Texture.hpp"
 
-Texture::Texture(SDL_Renderer *rend)
+Texture::Texture(SDL_Renderer *rend) : Error()
 {
     _rend = rend;
     _tex = nullptr;
-    _surf = nullptr;
 
     _flip = SDL_FLIP_NONE;
 }
 
 Texture::Texture(SDL_Renderer* rend, const char* imgFilePath) : Texture(rend)
 {
-    if (!LoadImage(imgFilePath))
-    {
-        _OKFlag = false;
-    }
-        
+    _OKFlag = LoadImage(imgFilePath);       
 }
 
 Texture::~Texture()
 {
     SDL_DestroyTexture(_tex);
-    // _surf jest usuwane od razu po utworzeniu _tex
     // _rend jest otrzymywane z zewnątrz więc usunięcie go w tym miejscu może powodować błędy
 }
 
 bool Texture::LoadImage(const char* path)
 {
-    _surf = IMG_Load(path);
+    SDL_Surface* _surf = IMG_Load(path);
     if(_surf == NULL)
     {
-        sprintf(_errorMsg, "Image load error: %s", SDL_GetError());
+        _errorMsg = ErrorMsg("Image load error: ") + ErrorMsg(SDL_GetError());
         _errorCode = ERROR_TEXTURE_LOAD;
         return false;
     }
@@ -39,7 +33,7 @@ bool Texture::LoadImage(const char* path)
     SDL_FreeSurface(_surf);
     if(_tex == NULL)
     {
-        sprintf(_errorMsg, "Texture create error: %s", SDL_GetError());
+        _errorMsg = ErrorMsg("Texture create error: ") + ErrorMsg(SDL_GetError());
         _errorCode = ERROR_TEXTURE_CREATE;
         return false;
     }

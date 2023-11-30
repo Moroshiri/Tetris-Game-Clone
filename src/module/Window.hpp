@@ -29,11 +29,9 @@ public:
     void AddToRenderList(Entity* element);
 
     SDL_Renderer* GetRenderer();
-
-    printHandle Print;
-
     Point GetCenter();
 
+    static printHandle Print;
 
 private:
     int _screen_width, _screen_height;
