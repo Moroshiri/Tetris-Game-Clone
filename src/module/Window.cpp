@@ -84,6 +84,7 @@ void Window::AddToRenderList(Entity* element)
     }
 }
 
+//void Window::Render(SDL_Texture* tex, SDL_Rect* rect)
 void Window::Render()
 {
     SDL_RenderClear(_renderer);
@@ -94,6 +95,8 @@ void Window::Render()
     {
         _renderList[i]->Render(_renderer);
     }
+    // SDL_Rect rect = obj.GetRect();
+    // SDL_RenderCopy(_renderer, obj.GetTexture()->GetSDLTexture(), NULL, &rect);
 
     SDL_RenderPresent(_renderer);
     //SDL_UpdateWindowSurface(_window);

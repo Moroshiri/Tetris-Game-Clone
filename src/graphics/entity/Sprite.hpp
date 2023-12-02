@@ -10,16 +10,16 @@ class Sprite : public Transform, public Entity
 public:
 
     Sprite(SDL_Renderer* rend);
-    Sprite(Texture tex);
+    Sprite(Texture* tex);
     ~Sprite();
 
-    void SetTexture(Texture tex);
-    Texture GetTexture();
+    void SetTexture(Texture* tex);
+    Texture* GetTexture();
 
     virtual void Render(SDL_Renderer* rend);
 
 private:
-    Texture _texture;
+    Texture* _texture;
 };
 
 #endif

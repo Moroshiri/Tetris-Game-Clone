@@ -23,36 +23,19 @@ Error Game::Run()
         if (!brickTex.IsOK())
             return brickTex;
         
-        Sprite brick = Sprite(brickTex);
+        Sprite brick = Sprite(&brickTex);
         brick.SetSize(50, 50);
         brick.SetCenter(25, 25);
         brick.SetPosition(_win->GetCenter());
         _win->AddToRenderList(&brick);
-
-        Rect rect = brick.GetRect();
-        SDL_Surface *surf = IMG_Load("assets/img/brick.png");
-        if(surf == NULL) return Error(ERROR_TEXTURE_LOAD, ErrorMsg(SDL_GetError()));
-        SDL_Texture *tex = SDL_CreateTextureFromSurface(winRenderer, surf);
-        SDL_FreeSurface(surf);
-        if(tex == NULL) return Error(ERROR_TEXTURE_CREATE, ErrorMsg(SDL_GetError()));
 
         while(_running)
         {
             _time.CalculateTime();
             HandleEvents();
 
-            //_win->Render();
-
-            SDL_RenderClear(winRenderer);
-            SDL_RenderCopy(winRenderer, tex, NULL, &rect);
-            // SDL_SetRenderDrawColor(winRenderer, 0xFF, 0xFF, 0xFF, 0xFF);
-            // if(SDL_RenderDrawRect(winRenderer, &rect) != 0)
-            //     _win->Print(SDL_GetError());
-
-            SDL_RenderPresent(winRenderer);
+            _win->Render();
         }
-
-        SDL_DestroyTexture(tex);
 
         return Error(); // Zwraca obiekt domyślny - brak błędów
     }

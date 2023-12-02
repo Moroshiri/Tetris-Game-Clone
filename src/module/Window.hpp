@@ -25,6 +25,7 @@ public:
     // Inicjalizuje okno programu i renderer
     bool Init();
 
+    //void Render(SDL_Texture* tex, SDL_Rect* rect);
     void Render();
     void AddToRenderList(Entity* element);
 
