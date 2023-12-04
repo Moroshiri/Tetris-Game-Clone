@@ -31,6 +31,7 @@ public:
 
     SDL_Renderer* GetRenderer();
     Point GetCenter();
+    Size GetSize();
 
     static printHandle Print;
 
@@ -44,6 +45,7 @@ private:
     SDL_Window *_window;
 
     SDL_Renderer *_renderer;
+
 };
 
 #endif

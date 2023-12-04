@@ -6,6 +6,9 @@ void Print(std::string message);
 void PrintError(Error err);
 void PrintErrorShort(Error err);
 
+const int SCREEN_WIDTH = 672;
+const int SCREEN_HEIGHT = 992;
+
 int main(int argv, char** args)
 {
     std::cout << "Hello it's Tetris game clone!" << std::endl;
@@ -16,7 +19,7 @@ int main(int argv, char** args)
     Error::PrintError = PrintErrorShort;
     Window::Print = Print;
 
-    Window winObj = Window();
+    Window winObj = Window(SCREEN_WIDTH, SCREEN_HEIGHT, "Tetris");
     if(!winObj.Init())
     {
         PrintErrorShort(winObj.GetError());  

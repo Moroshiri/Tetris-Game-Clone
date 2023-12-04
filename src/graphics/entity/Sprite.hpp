@@ -18,7 +18,7 @@ public:
 
     virtual void Render(SDL_Renderer* rend);
 
-private:
+protected:
     Texture* _texture;
 };
 

@@ -14,7 +14,7 @@ enum Direction
     DIR_LAST
 };
 
-class Transform
+class Transform : public Rectangle
 {
 public:
 
@@ -30,12 +30,8 @@ public:
 
     virtual void Move(int dx, int dy);
     virtual void Move(Direction dir, int steps);
-    virtual void SetPosition(int x, int y);
-    virtual void SetPosition(Point pos);
 
     virtual void Resize(int w, int h);
-    virtual void SetSize(int w, int h);
-    virtual void SetSize(Size size);
 
     virtual Point GetCenter();
     virtual void SetCenter(Point point);
@@ -47,7 +43,6 @@ public:
     */
     
 protected:
-    Rect _rect;
     double _rot;
     Point _center;
 };

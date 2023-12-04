@@ -36,34 +36,10 @@ void Transform::Move(Direction dir, int steps)
     _rect.y += dy;
 }
 
-void Transform::SetPosition(int x, int y)
-{
-    _rect.x = x;
-    _rect.y = y;
-}
-
-void Transform::SetPosition(Point pos)
-{
-    _rect.x = pos.x;
-    _rect.y = pos.y;
-}
-
 void Transform::Resize(int w, int h)
 {
     _rect.w += w;
     _rect.h += h;
-}
-
-void Transform::SetSize(int w, int h)
-{
-    _rect.w = w;
-    _rect.h = h;
-}
-
-void Transform::SetSize(Size size)
-{
-    _rect.w = size.w;
-    _rect.h = size.h;
 }
 
 double Transform::GetRotation()

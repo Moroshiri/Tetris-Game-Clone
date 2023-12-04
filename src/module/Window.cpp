@@ -1,4 +1,5 @@
 #include "Window.hpp"
+#include "../util/Convert.hpp"
 
 Window::Window()
 {
@@ -12,7 +13,7 @@ Window::Window()
     _renderList = new Entity*();
 }
 
-Window::Window(int width, int height, std::string title)
+Window::Window(int width, int height, std::string title) : Window()
 {
     _screen_width = width;
     _screen_height = height;
@@ -74,12 +75,13 @@ void Window::AddToRenderList(Entity* element)
     else
     {
         Entity **tmp = _renderList;
-        _renderList = new Entity*[_renderListPointer++];
+        _renderList = new Entity*[_renderListPointer + 1];
     
         for (uint32_t i = 0; i < _renderListPointer; i++)
             _renderList[i] = tmp[i];
         
         _renderList[_renderListPointer] = element;
+        _renderListPointer++;
         delete tmp;
     }
 }
@@ -93,6 +95,7 @@ void Window::Render()
     if(_renderListPointer != 0)
     for(uint32_t i = 0; i < _renderListPointer; i++)
     {
+        //Print(std::string("renderList ") + toString(i) + std::string(": ") + toString((int)_renderList[i]));
         _renderList[i]->Render(_renderer);
     }
     // SDL_Rect rect = obj.GetRect();
@@ -114,6 +117,13 @@ Point Window::GetCenter()
     Point res;
     res.x = w/2;
     res.y = h/2;
+    return res;
+}
+
+Size Window::GetSize()
+{
+    Size res;
+    SDL_GetWindowSizeInPixels(_window, &res.w, &res.h);
     return res;
 }
 

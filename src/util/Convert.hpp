@@ -3,7 +3,7 @@
 
 #include <string>
 
-std::string toString(int n)
+inline std::string toString(int n)
 {
     char* str = new char[7];
     sprintf(str, "%d", n);
