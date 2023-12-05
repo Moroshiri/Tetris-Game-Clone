@@ -1,7 +1,8 @@
 #include "Game.hpp"
 
 #include "util/Convert.hpp"
-#include "Board.hpp"
+#include "mechanics/grid/Board.hpp"
+#include "mechanics/grid/TShape.hpp"
 
 const char* imgPathList[] = 
 {

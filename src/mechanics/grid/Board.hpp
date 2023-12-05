@@ -1,10 +1,10 @@
 #ifndef _BOARD_HPP_
 #define _BOARD_HPP_
 
-#include "mechanics/grid/Grid.hpp"
-#include "graphics/texture/Texture.hpp"
-#include "graphics/entity/Entity.hpp"
-#include "util/Types.hpp"
+#include "Grid.hpp"
+#include "../../graphics/texture/Texture.hpp"
+#include "../../graphics/entity/Entity.hpp"
+#include "../../util/Types.hpp"
 
 const int BOARD_WIDTH = 10;
 const int BOARD_HEIGHT = 20;
