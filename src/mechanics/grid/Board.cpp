@@ -34,8 +34,22 @@ void Board::Render(SDL_Renderer* rend)
     
 }
 
-bool Board::TryMerge(Grid obj)
+bool Board::TryMerge(TShape* obj)
 {
+    int startPos = obj->_pos.x + (obj->_pos.y * _gridSize.w);
+    Size shapeSize = obj->GetGridSize();
+    int widthDiff = _gridSize.w - shapeSize.w; // Różnica szerokości planszy i siatki szktałtu
+    for(int i = 0; i < obj->_nTiles; i++)
+    {
+        int corrShift = i / shapeSize.h * widthDiff; // Przesunięcie ze względu na różnicę szerokości planszy i kształtu
+        int arrayPos = i + startPos + corrShift; // Indeks tablicy _tileArray
+        Tile btile = _tileArray[arrayPos], stile = obj->_tileArray[i]; 
+        bool canMerge = !(btile != TILE_EMPTY && stile != TILE_EMPTY);
+
+        if(!canMerge) return false;
+        if(btile == TILE_EMPTY && stile != TILE_EMPTY) _tileArray[arrayPos] = stile;
+    }
+
     return true;
 }
 

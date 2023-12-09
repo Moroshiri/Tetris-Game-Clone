@@ -2,6 +2,7 @@
 #define _GRID_HPP_
 
 #include "../../util/Types.hpp"
+#include "../../util/Convert.hpp"
 #include "../../util/Error.hpp"
 
 enum Tile
@@ -17,7 +18,8 @@ enum Tile
     TILE_LAST
 };
 
-const int TILE_SIZE = 32;
+const int DEFAULT_TILE_SIZE = 32;
+inline int TILE_SIZE;
 
 class Grid
 {

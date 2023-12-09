@@ -1,8 +1,6 @@
 #include "Game.hpp"
 
 #include "util/Convert.hpp"
-#include "mechanics/grid/Board.hpp"
-#include "mechanics/grid/TShape.hpp"
 
 const char* imgPathList[] = 
 {
@@ -16,9 +14,75 @@ const char* imgPathList[] =
     "assets/img/brickOrange.png"
 };
 
-Game::Game(Window* window) : _keyState(SDL_GetKeyboardState(NULL))
+Game::Game(Window* window) : 
+_keyState(SDL_GetKeyboardState(NULL)),
+_frameTex(window->GetRenderer(), "assets/img/frame.png"),
+_frame(&_frameTex),
+_tileBoard(newSize(BOARD_WIDTH, BOARD_HEIGHT), newSize(BOARD_WIDTH * TILE_SIZE, BOARD_HEIGHT * TILE_SIZE), newPoint(BOARD_POS_X, BOARD_POS_Y)),
+_actualShape(newPoint(3, 8)),
+_nextShapeBoard(newSize(4, 4), newSize(4 * TILE_SIZE, 4 * TILE_SIZE), newPoint(480, 640)),
+_nextShape(newPoint(0, 0))
 {
     _win = window;
+
+    SDL_Renderer* winRenderer = _win->GetRenderer();
+
+    // _frameTex = Texture(winRenderer, "assets/img/frame.png");
+    // _frame = Sprite(&_frameTex);
+    _frame.SetPosition(0, 0);
+    _frame.SetSize(_win->GetSize());
+    _frame.SetCenter(_win->GetCenter());
+    _win->AddToRenderList(&_frame);
+
+    // Texture redBrickTex = Texture(winRenderer, imgPathList[TILE_RED]);
+    // Sprite redBrick = Sprite(&redBrickTex);
+    // redBrick.SetPosition(96, 288);
+    // redBrick.SetSize(TILE_SIZE, TILE_SIZE);
+
+    // _win->AddToRenderList(&redBrick);
+    // _win->AddToRenderList(&redBrick2);
+
+    // Load textures:
+    
+    _tileTexArray = new Texture*[TILE_LAST - 1];
+    for(int i = 0; i < TILE_LAST; i++)
+    {
+        _tileTexArray[i] = new Texture(winRenderer, imgPathList[i]);
+        if(!_tileTexArray[i]->IsOK())
+            _win->PrintError(_tileTexArray[i]->GetError());
+    }
+
+    // Sprite redBrick2 = Sprite(tileTexArray[TILE_RED]);
+    // redBrick2.SetPosition(130, 320);
+    // redBrick2.SetSize(TILE_SIZE, TILE_SIZE);
+
+    // _win->AddToRenderList(&redBrick2);
+
+    // Size boardSize = newSize(BOARD_WIDTH, BOARD_HEIGHT);
+    // Size boardPxSize = newSize(BOARD_WIDTH * TILE_SIZE, BOARD_HEIGHT * TILE_SIZE);
+    // Point boardPos = newPoint(BOARD_POS_X, BOARD_POS_Y);
+    // _tileBoard = Board(boardSize, boardPxSize, boardPos);
+    _tileBoard.SetTextureArray(_tileTexArray);
+    _nextShapeBoard.SetTextureArray(_tileTexArray);
+
+    _nextShapeBoard.SetTile(TILE_BLUE, newPoint(0,0));
+    _nextShapeBoard.SetTile(TILE_BLUE, newPoint(1,1));
+    _nextShapeBoard.SetTile(TILE_BLUE, newPoint(2,2));
+    _nextShapeBoard.SetTile(TILE_BLUE, newPoint(3,3));
+
+    // tileBoard.SetTile(TILE_RED, 0, 0);
+    // tileBoard.SetTile(TILE_RED, BOARD_WIDTH-1, 0);
+    // tileBoard.SetTile(TILE_RED, 0, BOARD_HEIGHT-1);
+    // tileBoard.SetTile(TILE_RED, BOARD_WIDTH-1, BOARD_HEIGHT-1);
+
+    // Point shapePos = newPoint(3, 8);
+    // _actualShape = TShape(shapePos);
+    _actualShape.SetPattern(SHAPE_T, TILE_RED);
+
+    _tileBoard.TryMerge(&_actualShape);
+
+    _win->AddToRenderList(&_tileBoard);
+    _win->AddToRenderList(&_nextShapeBoard);
 }
 
 void Game::End()
@@ -32,58 +96,6 @@ Error Game::Run()
     _running = true;
     try
     {
-        SDL_Renderer* winRenderer = _win->GetRenderer();
-
-        Texture frameTex = Texture(winRenderer, "assets/img/frame.png");
-        Sprite frame = Sprite(&frameTex);
-        frame.SetPosition(0, 0);
-        frame.SetSize(_win->GetSize());
-        frame.SetCenter(_win->GetCenter());
-        _win->AddToRenderList(&frame);
-
-        // Texture redBrickTex = Texture(winRenderer, imgPathList[TILE_RED]);
-        // Sprite redBrick = Sprite(&redBrickTex);
-        // redBrick.SetPosition(96, 288);
-        // redBrick.SetSize(TILE_SIZE, TILE_SIZE);
-
-        // Sprite redBrick2 = Sprite(&redBrickTex);
-        // redBrick2.SetPosition(130, 320);
-        // redBrick2.SetSize(TILE_SIZE, TILE_SIZE);
-
-        // _win->AddToRenderList(&redBrick);
-        // _win->AddToRenderList(&redBrick2);
-
-
-        // Load textures:
-        
-        Texture** tileTexArray = new Texture*[TILE_LAST - 1];
-        for(int i = 0; i < TILE_LAST; i++)
-        {
-            tileTexArray[i] = new Texture(winRenderer, imgPathList[i]);
-            if(!tileTexArray[i]->IsOK())
-                _win->PrintError(tileTexArray[i]->GetError());
-        }
-
-        Size boardSize;
-        boardSize.w = BOARD_WIDTH;
-        boardSize.h = BOARD_HEIGHT;
-        Size boardPxSize;
-        boardPxSize.w = BOARD_WIDTH * TILE_SIZE;
-        boardPxSize.h = BOARD_HEIGHT * TILE_SIZE;
-        Point boardPos;
-        boardPos.x = BOARD_POS_X;
-        boardPos.y = BOARD_POS_Y;
-        Board tileBoard = Board(boardSize, boardPxSize, boardPos);
-        tileBoard.SetTextureArray(tileTexArray);
-
-        tileBoard.SetTile(TILE_RED, 0, 0);
-        tileBoard.SetTile(TILE_RED, BOARD_WIDTH-1, 0);
-        tileBoard.SetTile(TILE_RED, 0, BOARD_HEIGHT-1);
-        tileBoard.SetTile(TILE_RED, BOARD_WIDTH-1, BOARD_HEIGHT-1);
-
-        _win->AddToRenderList(&tileBoard);
-        
-
 
         while(_running)
         {

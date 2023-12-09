@@ -3,6 +3,8 @@
 
 #include "module/Window.hpp"
 #include "time/Time.hpp"
+#include "mechanics/grid/Board.hpp"
+#include "mechanics/grid/TShape.hpp"
 
 class Game
 {
@@ -28,6 +30,16 @@ private:
     const Uint8* _keyState;
 
     bool _running;
+
+    Texture _frameTex;
+    Sprite _frame;
+
+    Texture** _tileTexArray;
+    Board _tileBoard;
+    TShape _actualShape;
+    Board _nextShapeBoard;
+    TShape _nextShape;
+
     
 };
 

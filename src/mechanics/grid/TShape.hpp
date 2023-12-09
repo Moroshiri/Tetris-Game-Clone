@@ -12,7 +12,7 @@ class TShape : public Grid
 public:
     friend class Board;
 
-    TShape(Size grid_size, Point position);
+    TShape(Point position);
     ~TShape();
 
     TPattern GetPattern();

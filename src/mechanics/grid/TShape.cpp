@@ -1,6 +1,6 @@
 #include "TShape.hpp"
 
-TShape::TShape(Size grid_size, Point pos) : Grid(grid_size)
+TShape::TShape(Point pos) : Grid(newSize(4, 4))
 {
     _pos = pos;
     _rotDir = DIR_UP;
@@ -21,8 +21,9 @@ void TShape::SetPattern(TPattern pat, Tile tile)
 {
     _pat = pat;
     _tile = tile;
-    _patArray = (bool*)shapePatterns[pat];
-    _nPat = sizeof(_patArray) / sizeof(_patArray[0]) / PATTERN_NTILES - 1; // Liczba patternów od 0
+    _patArray = (bool*)(shapePatterns[pat]);
+    _nPat = sizeof(_patArray) / sizeof(_patArray[0]); // Liczba elementów tablicy
+    _nPat = _nPat / (PATTERN_NTILES / 8) - 1; // Liczba patternów od 0
     AssignTileArray();
 }
 
@@ -67,7 +68,23 @@ void TShape::SetPosition(int x, int y)
 
 void TShape::Move(Direction dir, int steps)
 {
-    // TODO
+    switch(dir)
+    {
+        case DIR_UP:
+            _pos.y -= steps;
+        break;
+        case DIR_RIGHT:
+            _pos.x += steps;
+        break;
+        case DIR_DOWN:
+            _pos.y += steps;
+        break;
+        case DIR_LEFT:
+            _pos.x -= steps;
+        break;
+        default:
+        break;
+    }
 }
 
 void TShape::AssignTileArray()

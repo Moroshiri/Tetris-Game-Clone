@@ -21,6 +21,9 @@ Window::Window(int width, int height, std::string title) : Window()
     _window_title = title;
 }
 
+Window::Window(Size size, std::string title) : Window(size.w, size.h, title)
+{ }
+
 Window::~Window()
 {
     SDL_DestroyRenderer(_renderer);
