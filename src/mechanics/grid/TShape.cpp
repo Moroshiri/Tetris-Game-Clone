@@ -1,4 +1,5 @@
 #include "TShape.hpp"
+#include <type_traits>
 
 TShape::TShape(Point pos) : Grid(newSize(4, 4))
 {
@@ -22,7 +23,8 @@ void TShape::SetPattern(TPattern pat, Tile tile)
     _pat = pat;
     _tile = tile;
     _patArray = (bool*)(shapePatterns[pat]);
-    _nPat = sizeof(_patArray) / sizeof(_patArray[0]); // Liczba elementów tablicy
+    // constexpr std::size_t arraySize = std::extent<decltype(shapePatterns[pat])>::value;
+    _nPat = sizeof(_patArray) / sizeof(_patArray[0]);
     _nPat = _nPat / (PATTERN_NTILES / 8) - 1; // Liczba patternów od 0
     AssignTileArray();
 }

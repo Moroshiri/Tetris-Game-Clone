@@ -140,7 +140,7 @@ const bool patShapeT[]
     0,0,0,0
 };
 
-inline const bool* shapePatterns[]
+const bool* const shapePatterns[]
 {
     patShapeNull,
     patShapeI,

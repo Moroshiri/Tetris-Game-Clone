@@ -36,6 +36,9 @@ void Board::Render(SDL_Renderer* rend)
 
 bool Board::TryMerge(TShape* obj)
 {
+
+    // TODO: zmiany przeprowadzać na tablicy tymczasowej, nie na oryginalnej, aby w razie niepowodzenia, odrzucić zmiany
+    // TODO: dodać zapezpieczenia przed wyjściem poza zakres tablicy _tileArray
     int startPos = obj->_pos.x + (obj->_pos.y * _gridSize.w);
     Size shapeSize = obj->GetGridSize();
     int widthDiff = _gridSize.w - shapeSize.w; // Różnica szerokości planszy i siatki szktałtu
