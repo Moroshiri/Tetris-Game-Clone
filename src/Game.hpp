@@ -40,7 +40,8 @@ private:
     Board _nextShapeBoard;
     TShape _nextShape;
 
-    
+    void NextShape();
+    void RefreshBoard();
 };
 
 #endif

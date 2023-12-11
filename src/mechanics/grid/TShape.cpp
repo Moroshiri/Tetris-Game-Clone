@@ -1,11 +1,12 @@
 #include "TShape.hpp"
-#include <type_traits>
+
+int TShape::nShapeTiles = 16;
 
 TShape::TShape(Point pos) : Grid(newSize(4, 4))
 {
     _pos = pos;
     _rotDir = DIR_UP;
-    _pat = SHAPE_NULL;
+    _patType = SHAPE_NULL;
 }
 
 TShape::~TShape()
@@ -15,17 +16,18 @@ TShape::~TShape()
 
 TPattern TShape::GetPattern()
 {
-    return _pat;
+    return _patType;
 }
 
 void TShape::SetPattern(TPattern pat, Tile tile)
 {
-    _pat = pat;
+    _patType = pat;
     _tile = tile;
-    _patArray = (bool*)(shapePatterns[pat]);
+    _patStruct = shapePatterns[pat];
+
     // constexpr std::size_t arraySize = std::extent<decltype(shapePatterns[pat])>::value;
-    _nPat = sizeof(_patArray) / sizeof(_patArray[0]);
-    _nPat = _nPat / (PATTERN_NTILES / 8) - 1; // Liczba patternów od 0
+    // _nPat = sizeof(_patArray) / sizeof(_patArray[0]);
+    // _nPat = _nPat / (PATTERN_NTILES / 8) - 1; // Liczba patternów od 0
     AssignTileArray();
 }
 
@@ -40,16 +42,12 @@ void TShape::SetRotation(Direction dir)
     AssignTileArray();
 }
 
-void TShape::Rotate(int dir)
+void TShape::Rotate(TRotation rot)
 {
-    int shift = dir > 0 ? 1 : (dir < 0 ? -1 : 0);
-    if(shift != 0) 
-    {
-        int res = _rotDir + shift;
-        _rotDir = (Direction)(res < 0 ? DIR_LAST - 1 : (res >= DIR_LAST ? 0 : res));
-
-        AssignTileArray();
-    }
+    int shift = rot == ROT_RIGHT ? 1 : -1;
+    int res = _rotDir + shift;
+    _rotDir = (Direction)(res < 0 ? DIR_LAST - 1 : (res >= DIR_LAST ? 0 : res));
+    AssignTileArray();
 }
 
 Point TShape::GetPosition()
@@ -91,9 +89,18 @@ void TShape::Move(Direction dir, int steps)
 
 void TShape::AssignTileArray()
 {
-    int patArrayShift = _nPat < 1 ? 0 : PATTERN_NTILES * (_rotDir % _nPat); // Obliczanie przesunięcia w zależkości od ilości patternów
-    for(int i = 0; i < PATTERN_NTILES; i++)
+    int patWidth = _patStruct->w;
+    int nTiles = patWidth * patWidth;
+    int patRotShift = _patStruct->n == 1 || _rotDir == DIR_UP ? 0 : nTiles * (_rotDir % _patStruct->n); // Przesunięcie ze względu na obrót, czyli wybranie odpowiedniego patternu z tablicy
+    
+    for(int i = 0, row = 0, col = 0; i < nShapeTiles; i++, row = i / _gridSize.h, col = i % _gridSize.w)
     {
-        _tileArray[i] = _patArray[i + patArrayShift] ? _tile : TILE_EMPTY;
+        if(row < patWidth && col < patWidth) // Przepisanie wartości z tablicy
+        {
+            int patWidthShift = (_gridSize.w - patWidth) * row; // Przesunięcie ze względu na różnicę szerokości patternu i siatki
+            _tileArray[i] = _patStruct->arr[i + patRotShift - patWidthShift] ? _tile : TILE_EMPTY;
+        }
+        else // Dodawanie pustych linii
+            _tileArray[i] = TILE_EMPTY;
     }
 }

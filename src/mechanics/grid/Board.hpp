@@ -33,6 +33,8 @@ public:
     bool TryMerge(TShape* obj);
     void SetTextureArray(Texture** ptr);
 
+    void Clear();
+
 private:
     Texture** _texturesArray; // Tablica wskaźników na tekstury do wyświetlania
 };

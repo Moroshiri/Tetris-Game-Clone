@@ -130,7 +130,7 @@ void Game::HandleEvents()
             break;
 
             default:
-                if (e.type != SDL_MOUSEMOTION && e.type != SDL_MOUSEBUTTONDOWN && e.type != SDL_MOUSEBUTTONUP)
+                if (e.type != SDL_MOUSEMOTION && e.type != SDL_MOUSEBUTTONDOWN && e.type != SDL_MOUSEBUTTONUP && e.type != SDL_TEXTINPUT && e.type != SDL_KEYUP)
                 {
                     char *str = new char[32];
                     sprintf(str, "Unhandled event: %d", e.type);
@@ -150,13 +150,37 @@ void Game::KeyboardInput(SDL_Keycode key_code)
         break;
 
         default:
-            char *str = new char[32];
-            sprintf(str, "Unhandled key: %d", key_code);
-            _win->Print(std::string(str));
+            // char *str = new char[32];
+            // sprintf(str, "Unhandled key: %d", key_code);
+            // _win->Print(std::string(str));
+            if(_keyState[SDL_SCANCODE_E])
+                _actualShape.Rotate(ROT_LEFT);
+            if(_keyState[SDL_SCANCODE_Q])
+                _actualShape.Rotate(ROT_RIGHT);
+            if(_keyState[SDL_SCANCODE_R])
+                NextShape();
+            RefreshBoard();
         break;
     }
     
     SDL_PumpEvents();
 
     // Tutaj można sprawdzić wciśnięcie klawiszy
+    
+}
+
+void Game::NextShape()
+{
+    TPattern pat = _actualShape.GetPattern();
+    pat = (TPattern)(1 + (int)pat);
+    if(pat == SHAPE_LAST)
+        pat = SHAPE_I;
+    
+    _actualShape.SetPattern(pat, TILE_RED);
+}
+
+void Game::RefreshBoard()
+{
+    _tileBoard.Clear();
+    _tileBoard.TryMerge(&_actualShape);
 }

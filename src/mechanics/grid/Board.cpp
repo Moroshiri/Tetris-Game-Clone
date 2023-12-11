@@ -60,3 +60,9 @@ void Board::SetTextureArray(Texture** ptr)
 {
     _texturesArray = ptr;
 }
+
+void Board::Clear()
+{
+    for(int i = 0; i < _nTiles; i++)
+        _tileArray[i] = TILE_EMPTY;
+}

@@ -5,12 +5,17 @@
 #include "Grid.hpp"
 #include "Patterns.hpp"
 
-
+enum TRotation
+{
+    ROT_RIGHT,
+    ROT_LEFT
+};
 
 class TShape : public Grid
 {
 public:
     friend class Board;
+    static int nShapeTiles;
 
     TShape(Point position);
     ~TShape();
@@ -20,7 +25,7 @@ public:
 
     Direction GetRotation();
     void SetRotation(Direction dir);
-    void Rotate(int dir); // + w prawo, - w lewo, 0 - brak obrotu
+    void Rotate(TRotation rot);
 
     Point GetPosition();
     void SetPosition(Point pos);
@@ -30,12 +35,13 @@ public:
 protected:
     Point _pos; // Pozycja na planszy, nie na ekranie
     Direction _rotDir; // Aktualny kierunek oboru
-    TPattern _pat; // Aktualny pattern
+    TPattern _patType; // Aktualny pattern
 
 private:
     void AssignTileArray();
-    bool* _patArray; // Tablica z patternami
-    int _nPat; // Liczba patternów w tablicy
+    // bool* _patArray; // Tablica z patternami
+    // int _nPat; // Liczba patternów w tablicy
+    const ShapePattern* _patStruct; // Pattern kształtu
     Tile _tile; // Aktualny kolor
 };
 

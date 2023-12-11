@@ -14,17 +14,25 @@ enum TPattern
     SHAPE_LAST
 };
 
+struct ShapePattern
+{
+    const bool* arr; // Wskaźnik na tablicę patternów
+    int w; // Szerokość patternu
+    int n; // Liczba patternów
+};
+
 const int PATTERN_NTILES = 16;
 
-const bool patShapeNull[]
+const bool patArrNull[]
 {
     0,0,0,0,
     0,0,0,0,
     0,0,0,0,
     0,0,0,0
 };
+const ShapePattern patNull { patArrNull, 4, 1 };
 
-const bool patShapeI[]
+const bool patArrShapeI[]
 {
     0,0,0,0,
     1,1,1,1,
@@ -36,120 +44,109 @@ const bool patShapeI[]
     0,0,1,0,
     0,0,1,0
 };
+const ShapePattern patShapeI {patArrShapeI, 4, 2};
 
-const bool patShapeJ[]
+const bool patArrShapeJ[]
 {
-    0,1,0,0,
-    0,1,0,0,
-    1,1,0,0,
-    0,0,0,0,
+    0,1,0,
+    0,1,0,
+    1,1,0,
 
-    1,0,0,0,
-    1,1,1,0,
-    0,0,0,0,
-    0,0,0,0,
+    1,0,0,
+    1,1,1,
+    0,0,0,
 
-    0,1,1,0,
-    0,1,0,0,
-    0,1,0,0,
-    0,0,0,0,
+    0,1,1,
+    0,1,0,
+    0,1,0,
 
-    0,0,0,0,
-    1,1,1,0,
-    0,0,1,0,
-    0,0,0,0
+    0,0,0,
+    1,1,1,
+    0,0,1
 };
+const ShapePattern patShapeJ {patArrShapeJ, 3, 4};
 
-const bool patShapeL[]
+const bool patArrShapeL[]
 {
-    0,1,0,0,
-    0,1,0,0,
-    0,1,1,0,
-    0,0,0,0,
+    0,1,0,
+    0,1,0,
+    0,1,1,
 
-    0,0,0,0,
-    1,1,1,0,
-    1,0,0,0,
-    0,0,0,0,
+    0,0,0,
+    1,1,1,
+    1,0,0,
 
-    1,1,0,0,
-    0,1,0,0,
-    0,1,0,0,
-    0,0,0,0,
+    1,1,0,
+    0,1,0,
+    0,1,0,
     
-    0,0,1,0,
-    1,1,1,0,
-    0,0,0,0,
-    0,0,0,0
+    0,0,1,
+    1,1,1,
+    0,0,0
 };
+const ShapePattern patShapeL {patArrShapeL, 3, 4};
 
-const bool patShapeO[]
+const bool patArrShapeO[]
 {
-    0,0,0,0,
-    0,1,1,0,
-    0,1,1,0,
-    0,0,0,0
+    1,1,
+    1,1
 };
+const ShapePattern patShapeO {patArrShapeO, 2, 1};
 
-const bool patShapeS[]
+const bool patArrShapeS[]
 {
-    0,1,1,0,
-    1,1,0,0,
-    0,0,0,0,
-    0,0,0,0,
+    0,1,1,
+    1,1,0,
+    0,0,0,
 
-    0,1,0,0,
-    0,1,1,0,
-    0,0,1,0,
-    0,0,0,0
+    1,0,0,
+    1,1,0,
+    0,1,0
 };
+const ShapePattern patShapeS {patArrShapeS, 3, 2};
 
-const bool patShapeZ[]
+const bool patArrShapeZ[]
 {
-    1,1,0,0,
-    0,1,1,0,
-    0,0,0,0,
-    0,0,0,0,
+    1,1,0,
+    0,1,1,
+    0,0,0,
 
-    0,0,1,0,
-    0,1,1,0,
-    0,1,0,0,
-    0,0,0,0
+    0,1,0,
+    1,1,0,
+    1,0,0,
 };
+const ShapePattern patShapeZ {patArrShapeZ, 3, 2};
 
-const bool patShapeT[]
+const bool patArrShapeT[]
 {
-    0,0,0,0,
-    1,1,1,0,
-    0,1,0,0,
-    0,0,0,0,
+    0,0,0,
+    1,1,1,
+    0,1,0,
 
-    0,1,0,0,
-    1,1,0,0,
-    0,1,0,0,
-    0,0,0,0,
+    0,1,0,
+    1,1,0,
+    0,1,0,
 
-    0,1,0,0,
-    1,1,1,0,
-    0,0,0,0,
-    0,0,0,0,
+    0,1,0,
+    1,1,1,
+    0,0,0,
 
-    0,1,0,0,
-    0,1,1,0,
-    0,1,0,0,
-    0,0,0,0
+    0,1,0,
+    0,1,1,
+    0,1,0
 };
+const ShapePattern patShapeT {patArrShapeT, 3, 4};
 
-const bool* const shapePatterns[]
+const ShapePattern* const shapePatterns[]
 {
-    patShapeNull,
-    patShapeI,
-    patShapeJ,
-    patShapeL,
-    patShapeO,
-    patShapeS,
-    patShapeZ,
-    patShapeT
+    &patNull,
+    &patShapeI,
+    &patShapeJ,
+    &patShapeL,
+    &patShapeO,
+    &patShapeS,
+    &patShapeZ,
+    &patShapeT
 };
 
 #endif
