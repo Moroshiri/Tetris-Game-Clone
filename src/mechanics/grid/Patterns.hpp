@@ -42,9 +42,19 @@ const bool patArrShapeI[]
     0,0,1,0,
     0,0,1,0,
     0,0,1,0,
-    0,0,1,0
+    0,0,1,0,
+
+    0,0,0,0,
+    0,0,0,0,
+    1,1,1,1,
+    0,0,0,0,
+    
+    0,1,0,0,
+    0,1,0,0,
+    0,1,0,0,
+    0,1,0,0
 };
-const ShapePattern patShapeI {patArrShapeI, 4, 2};
+const ShapePattern patShapeI {patArrShapeI, 4, 4};
 
 const bool patArrShapeJ[]
 {
@@ -99,11 +109,19 @@ const bool patArrShapeS[]
     1,1,0,
     0,0,0,
 
+    0,1,0,
+    0,1,1,
+    0,0,1,
+
+    0,0,0,
+    0,1,1,
+    1,1,0,
+
     1,0,0,
     1,1,0,
     0,1,0
 };
-const ShapePattern patShapeS {patArrShapeS, 3, 2};
+const ShapePattern patShapeS {patArrShapeS, 3, 4};
 
 const bool patArrShapeZ[]
 {
@@ -111,11 +129,19 @@ const bool patArrShapeZ[]
     0,1,1,
     0,0,0,
 
+    0,0,1,
+    0,1,1,
+    0,1,0,
+    
+    0,0,0,
+    1,1,0,
+    0,1,1,
+
     0,1,0,
     1,1,0,
     1,0,0,
 };
-const ShapePattern patShapeZ {patArrShapeZ, 3, 2};
+const ShapePattern patShapeZ {patArrShapeZ, 3, 4};
 
 const bool patArrShapeT[]
 {

@@ -2,7 +2,6 @@
 #define _BOARD_HPP_
 
 #include "Grid.hpp"
-#include "TShape.hpp"
 #include "../../graphics/texture/Texture.hpp"
 #include "../../graphics/entity/Entity.hpp"
 #include "../../util/Types.hpp"
@@ -30,13 +29,16 @@ public:
 
     virtual void Render(SDL_Renderer* rend);
 
-    bool TryMerge(TShape* obj);
+    bool TryMerge(Grid* obj, Point pos);
+    void Merge(Grid* obj, Point pos);
     void SetTextureArray(Texture** ptr);
-
-    void Clear();
+    Texture* GetTexture(int index) const;
+    bool IsTexReady() const;
 
 private:
     Texture** _texturesArray; // Tablica wskaźników na tekstury do wyświetlania
+    int _nTex;
+    bool _texReady;
 };
 
 #endif

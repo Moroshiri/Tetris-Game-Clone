@@ -2,9 +2,8 @@
 
 int TShape::nShapeTiles = 16;
 
-TShape::TShape(Point pos) : Grid(newSize(4, 4))
+TShape::TShape(Point pos, Board* host) : SubGrid(newSize(4, 4), pos, host)
 {
-    _pos = pos;
     _rotDir = DIR_UP;
     _patType = SHAPE_NULL;
 }
@@ -48,43 +47,6 @@ void TShape::Rotate(TRotation rot)
     int res = _rotDir + shift;
     _rotDir = (Direction)(res < 0 ? DIR_LAST - 1 : (res >= DIR_LAST ? 0 : res));
     AssignTileArray();
-}
-
-Point TShape::GetPosition()
-{
-    return _pos;
-}
-
-void TShape::SetPosition(Point pos)
-{
-    _pos = pos;
-}
-
-void TShape::SetPosition(int x, int y)
-{
-    _pos.x = x;
-    _pos.y = y;
-}
-
-void TShape::Move(Direction dir, int steps)
-{
-    switch(dir)
-    {
-        case DIR_UP:
-            _pos.y -= steps;
-        break;
-        case DIR_RIGHT:
-            _pos.x += steps;
-        break;
-        case DIR_DOWN:
-            _pos.y += steps;
-        break;
-        case DIR_LEFT:
-            _pos.x -= steps;
-        break;
-        default:
-        break;
-    }
 }
 
 void TShape::AssignTileArray()

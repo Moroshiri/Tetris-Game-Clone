@@ -19,9 +19,9 @@ _keyState(SDL_GetKeyboardState(NULL)),
 _frameTex(window->GetRenderer(), "assets/img/frame.png"),
 _frame(&_frameTex),
 _tileBoard(newSize(BOARD_WIDTH, BOARD_HEIGHT), newSize(BOARD_WIDTH * TILE_SIZE, BOARD_HEIGHT * TILE_SIZE), newPoint(BOARD_POS_X, BOARD_POS_Y)),
-_actualShape(newPoint(3, 8)),
+_actualShape(newPoint(3, 8), &_tileBoard),
 _nextShapeBoard(newSize(4, 4), newSize(4 * TILE_SIZE, 4 * TILE_SIZE), newPoint(480, 640)),
-_nextShape(newPoint(0, 0))
+_nextShape(newPoint(0, 0), &_nextShapeBoard)
 {
     _win = window;
 
@@ -79,9 +79,10 @@ _nextShape(newPoint(0, 0))
     // _actualShape = TShape(shapePos);
     _actualShape.SetPattern(SHAPE_T, TILE_RED);
 
-    _tileBoard.TryMerge(&_actualShape);
+    //_tileBoard.TryMerge(&_actualShape);
 
     _win->AddToRenderList(&_tileBoard);
+    _win->AddToRenderList(&_actualShape);
     _win->AddToRenderList(&_nextShapeBoard);
 }
 
@@ -153,20 +154,29 @@ void Game::KeyboardInput(SDL_Keycode key_code)
             // char *str = new char[32];
             // sprintf(str, "Unhandled key: %d", key_code);
             // _win->Print(std::string(str));
+            SDL_PumpEvents();
+
+            // Rotating and switching
             if(_keyState[SDL_SCANCODE_E])
-                _actualShape.Rotate(ROT_LEFT);
-            if(_keyState[SDL_SCANCODE_Q])
                 _actualShape.Rotate(ROT_RIGHT);
+            if(_keyState[SDL_SCANCODE_Q])
+                _actualShape.Rotate(ROT_LEFT);
             if(_keyState[SDL_SCANCODE_R])
                 NextShape();
+
+            // Moving
+            if(_keyState[SDL_SCANCODE_W])
+                _actualShape.Move(DIR_UP, 1);
+            if(_keyState[SDL_SCANCODE_A])
+                _actualShape.Move(DIR_LEFT, 1);
+            if(_keyState[SDL_SCANCODE_S])
+                _actualShape.Move(DIR_DOWN, 1);
+            if(_keyState[SDL_SCANCODE_D])
+                _actualShape.Move(DIR_RIGHT, 1);
+
             RefreshBoard();
         break;
     }
-    
-    SDL_PumpEvents();
-
-    // Tutaj można sprawdzić wciśnięcie klawiszy
-    
 }
 
 void Game::NextShape()
@@ -181,6 +191,5 @@ void Game::NextShape()
 
 void Game::RefreshBoard()
 {
-    _tileBoard.Clear();
-    _tileBoard.TryMerge(&_actualShape);
+    // _tileBoard.Clear();
 }

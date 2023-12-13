@@ -3,6 +3,8 @@
 Board::Board(Size grid_size, Size px_size, Point position) : Grid(grid_size), Rectangle(position, px_size)
 {
     _texturesArray = nullptr;
+    _nTex = 0;
+    _texReady = false;
 }
 
 Board::~Board()
@@ -31,22 +33,24 @@ void Board::Render(SDL_Renderer* rend)
             }
         }
     }
-    
 }
 
-bool Board::TryMerge(TShape* obj)
+bool Board::TryMerge(Grid* obj, Point pos)
 {
 
     // TODO: zmiany przeprowadzać na tablicy tymczasowej, nie na oryginalnej, aby w razie niepowodzenia, odrzucić zmiany
     // TODO: dodać zapezpieczenia przed wyjściem poza zakres tablicy _tileArray
-    int startPos = obj->_pos.x + (obj->_pos.y * _gridSize.w);
+
+    
+    int startPos = pos.x + (pos.y * _gridSize.w);
     Size shapeSize = obj->GetGridSize();
+    int nTiles = shapeSize.w * shapeSize.h;
     int widthDiff = _gridSize.w - shapeSize.w; // Różnica szerokości planszy i siatki szktałtu
-    for(int i = 0; i < obj->_nTiles; i++)
+    for(int i = 0; i < nTiles; i++)
     {
         int corrShift = i / shapeSize.h * widthDiff; // Przesunięcie ze względu na różnicę szerokości planszy i kształtu
         int arrayPos = i + startPos + corrShift; // Indeks tablicy _tileArray
-        Tile btile = _tileArray[arrayPos], stile = obj->_tileArray[i]; 
+        Tile btile = _tileArray[arrayPos], stile = obj->GetGridArray()[i]; 
         bool canMerge = !(btile != TILE_EMPTY && stile != TILE_EMPTY);
 
         if(!canMerge) return false;
@@ -58,11 +62,26 @@ bool Board::TryMerge(TShape* obj)
 
 void Board::SetTextureArray(Texture** ptr)
 {
-    _texturesArray = ptr;
+    if(ptr != nullptr)
+    {
+        int nTex = sizeof(ptr) - 1;
+        if(nTex == TILE_LAST-1)
+        {
+            _texturesArray = ptr;
+            _nTex = nTex;
+            _texReady = true;
+        }
+    }
 }
 
-void Board::Clear()
+Texture* Board::GetTexture(int index) const
 {
-    for(int i = 0; i < _nTiles; i++)
-        _tileArray[i] = TILE_EMPTY;
+    if (index < _nTex && index > 0)
+        return _texturesArray[index];
+    else return nullptr;
+}
+
+bool Board::IsTexReady() const
+{
+    return _texReady;
 }

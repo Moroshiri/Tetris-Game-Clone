@@ -1,8 +1,7 @@
 #ifndef _TSHAPE_HPP_
 #define _TSHAPE_HPP_
 
-#include "../../graphics/entity/transform/Transform.hpp"
-#include "Grid.hpp"
+#include "SubGrid.hpp"
 #include "Patterns.hpp"
 
 enum TRotation
@@ -11,13 +10,12 @@ enum TRotation
     ROT_LEFT
 };
 
-class TShape : public Grid
+class TShape : public SubGrid
 {
 public:
-    friend class Board;
     static int nShapeTiles;
 
-    TShape(Point position);
+    TShape(Point position, Board* host);
     ~TShape();
 
     TPattern GetPattern();
@@ -26,11 +24,6 @@ public:
     Direction GetRotation();
     void SetRotation(Direction dir);
     void Rotate(TRotation rot);
-
-    Point GetPosition();
-    void SetPosition(Point pos);
-    void SetPosition(int x, int y);
-    void Move(Direction dir, int steps);
 
 protected:
     Point _pos; // Pozycja na planszy, nie na ekranie

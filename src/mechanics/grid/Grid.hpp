@@ -35,6 +35,9 @@ public:
 
     virtual const Size GetGridSize();
 
+    virtual void Clear();
+    virtual void Clear(Tile tile);
+
 protected:
     Tile* _tileArray; // Tablica pól siatki
     const Size _gridSize; // Wymiary siatki

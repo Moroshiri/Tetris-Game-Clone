@@ -56,3 +56,14 @@ const Size Grid::GetGridSize()
 {
     return _gridSize;
 }
+
+void Grid::Clear(Tile tile)
+{
+    for(int i = 0; i < _nTiles; i++)
+        _tileArray[i] = tile;
+}
+
+void Grid::Clear()
+{
+    Clear(TILE_EMPTY);
+}
